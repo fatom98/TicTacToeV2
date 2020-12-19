@@ -14,10 +14,10 @@ class Game:
 
     def again(self):
         self.win.fill(BLACK)
-        self.board = Board()
-        self.pc = Ai()
         self.human = random.choice(["X", "O"])
         self.ai = "X" if self.human == "O" else "O"
+        self.board = Board()
+        self.pc = Ai(self.board, self.human, self.ai)
         self.end = False
         self.turn = random.choice((self.human, self.ai))
         self.winner = None
@@ -55,12 +55,12 @@ class Game:
             self.board.set_board(pos, self.ai)
             self.change_turn(self.human)
 
-    def change_turn(self, next):
+    def change_turn(self, _next):
 
-        win = self.board.win()
+        win = self.board.win(self.board.board, self.turn)
 
         if win == False:
-            self.turn = next
+            self.turn = _next
 
             if self.turn == self.ai:
                 self.ai_move()
@@ -73,6 +73,6 @@ class Game:
             self.winner = "No body"
 
         else:
-            self.winner = self.turn
+            self.winner = state
 
         self.end = True

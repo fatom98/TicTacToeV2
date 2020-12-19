@@ -40,36 +40,40 @@ class Board:
         r, c = pos
         self.board[r][c] = piece
 
-    def get_available(self):
+    @staticmethod
+    def get_available(board):
 
         available = []
 
         for row in range(ROWS):
             for col in range(COLS):
 
-                if self.board[row][col] == "":
+                if board[row][col] == "":
                     available.append((row, col))
 
         return available
 
+    @staticmethod
+    def num_available_spot(board):
+        return len(Board.get_available(board))
+
     def get_pos(self, pos):
         return self.board[pos[0]][pos[1]]
 
-    def win(self):
+    def win(self, board, turn):
 
-        if (self.board[0][0] == self.board[0][1] == self.board[0][2] != "" or
-            self.board[1][0] == self.board[1][1] == self.board[1][2] != "" or
-            self.board[2][0] == self.board[2][1] == self.board[2][2] != "" or
-            self.board[0][0] == self.board[1][0] == self.board[2][0] != "" or
-            self.board[0][1] == self.board[1][1] == self.board[2][1] != "" or
-            self.board[0][2] == self.board[1][2] == self.board[2][2] != "" or
-            self.board[0][0] == self.board[1][1] == self.board[2][2] != "" or
-                self.board[0][2] == self.board[1][1] == self.board[2][0] != ""):
+        if (board[0][0] == board[0][1] == board[0][2] != "" or
+            board[1][0] == board[1][1] == board[1][2] != "" or
+            board[2][0] == board[2][1] == board[2][2] != "" or
+            board[0][0] == board[1][0] == board[2][0] != "" or
+            board[0][1] == board[1][1] == board[2][1] != "" or
+            board[0][2] == board[1][2] == board[2][2] != "" or
+            board[0][0] == board[1][1] == board[2][2] != "" or
+                board[0][2] == board[1][1] == board[2][0] != ""):
 
-            return True
+            return turn
 
-        elif len(self.get_available()) == 0:
-            print("tie")
+        elif Board.num_available_spot(board) == 0:
             return "tie"
 
         else:
